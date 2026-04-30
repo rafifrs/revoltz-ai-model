@@ -1,0 +1,29 @@
+# OS/editor noise
+.DS_Store
+.vscode/
+.idea/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+.venv*/
+venv/
+
+# Local environment files
+.env
+.env.*
+
+# Build and packaging artifacts
+build/
+dist/
+*.egg-info/

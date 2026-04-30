@@ -1,0 +1,32 @@
+{
+  "cells": [
+    {
+      "cell_id": "workshop_cell_A",
+      "source_pack_id": "pack_alpha",
+      "IR_ohm": 0.075,
+      "OCV_V": 3.0
+    },
+    {
+      "cell_id": "workshop_cell_B",
+      "source_pack_id": "pack_beta",
+      "IR_ohm": 0.077,
+      "OCV_V": 3.02
+    },
+    {
+      "cell_id": "workshop_cell_C",
+      "source_pack_id": "pack_gamma",
+      "IR_ohm": 0.071,
+      "OCV_V": 3.01
+    },
+    {
+      "cell_id": "workshop_cell_D",
+      "source_pack_id": "pack_delta",
+      "IR_ohm": 0.12,
+      "OCV_V": 3.4
+    }
+  ],
+  "assembly_request": {
+    "target_pack_size": 3,
+    "allow_partial_packs": true
+  }
+}

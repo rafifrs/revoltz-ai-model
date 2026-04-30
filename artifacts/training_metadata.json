@@ -1,0 +1,22 @@
+{
+  "model_version": "cell_matcher_v1",
+  "snapshot_cycle": 100,
+  "training_samples": 14,
+  "non_outlier_training_samples": 9,
+  "selected_clusters": 2,
+  "silhouette_score": 0.4772012499667803,
+  "compatibility_thresholds": {
+    "IR_ohm": 0.005,
+    "OCV_V": 0.05
+  },
+  "iqr_bounds": {
+    "IR_ohm": [
+      0.06884306450779928,
+      0.08550456362121325
+    ],
+    "OCV_V": [
+      2.2936250000000005,
+      4.174624999999999
+    ]
+  }
+}
