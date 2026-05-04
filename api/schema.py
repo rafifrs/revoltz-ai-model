@@ -89,3 +89,39 @@ class ModelInfoResponse(BaseModel):
     compatibility_thresholds: dict[str, float]
     iqr_bounds: dict[str, tuple[float, float]]
     silhouette_score: float | None
+
+
+class PackInput(BaseModel):
+    pack_id: str = Field(..., min_length=1)
+    ocv_v: float = Field(..., gt=0)
+    capacity_ah: float = Field(..., gt=0)
+    cycle_count: int = Field(..., ge=0)
+    temperature_c: float = Field(..., gt=-100, lt=200)
+    age_days: float | None = None
+    chemistry: str | None = None
+
+
+class PackPredictionResult(BaseModel):
+    pack_id: str
+    predicted_soh: float
+    confidence_score: float
+    recommended_action: str
+    notes: list[str]
+
+
+class PredictPackRequest(BaseModel):
+    packs: list[PackInput] = Field(..., min_length=1, max_length=500)
+
+
+class PredictPackResponse(BaseModel):
+    results: list[PackPredictionResult]
+    summary: dict[str, float | int]
+
+
+class Model1InfoResponse(BaseModel):
+    model_version: str
+    training_rows: int
+    eval_rows: int
+    mae: float
+    rmse: float
+    r2: float

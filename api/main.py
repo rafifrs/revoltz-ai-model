@@ -4,13 +4,25 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.schema import ModelInfoResponse, PredictRequest, PredictResponse, PredictSummary
-from src.predictor import get_model, predict_cells_with_recommendations
+from api.schema import (
+    Model1InfoResponse,
+    ModelInfoResponse,
+    PredictPackRequest,
+    PredictPackResponse,
+    PredictRequest,
+    PredictResponse,
+    PredictSummary,
+)
+from src.predictor import get_model, get_model1, predict_cells_with_recommendations, predict_pack_health
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     get_model()
+    try:
+        get_model1()
+    except FileNotFoundError:
+        pass
     yield
 
 
@@ -58,6 +70,20 @@ def model_info() -> ModelInfoResponse:
     )
 
 
+@app.get("/model1-info", response_model=Model1InfoResponse)
+def model1_info() -> Model1InfoResponse:
+    model = get_model1()
+    metadata = model.metadata
+    return Model1InfoResponse(
+        model_version=metadata.get("model_version", "unknown"),
+        training_rows=metadata.get("training_rows", 0),
+        eval_rows=metadata.get("eval_rows", 0),
+        mae=metadata.get("mae", 0.0),
+        rmse=metadata.get("rmse", 0.0),
+        r2=metadata.get("r2", 0.0),
+    )
+
+
 @app.post("/predict-cells", response_model=PredictResponse)
 def predict(request: PredictRequest) -> PredictResponse:
     cells_input = [cell.model_dump() for cell in request.cells]
@@ -94,4 +120,27 @@ def predict(request: PredictRequest) -> PredictResponse:
             status_breakdown=status_breakdown,
         ),
         recommended_packs=recommended_packs,
+    )
+
+
+@app.post("/predict-pack", response_model=PredictPackResponse)
+def predict_pack(request: PredictPackRequest) -> PredictPackResponse:
+    packs_input = [pack.model_dump() for pack in request.packs]
+    results = predict_pack_health(packs_input)
+    action_counts: dict[str, int] = {}
+    for row in results:
+        action = row["recommended_action"]
+        action_counts[action] = action_counts.get(action, 0) + 1
+    avg_soh = sum(row["predicted_soh"] for row in results) / len(results)
+    avg_conf = sum(row["confidence_score"] for row in results) / len(results)
+    return PredictPackResponse(
+        results=results,
+        summary={
+            "total_packs": len(results),
+            "average_predicted_soh": avg_soh,
+            "average_confidence_score": avg_conf,
+            "recondition_count": action_counts.get("recondition", 0),
+            "repack_count": action_counts.get("repack", 0),
+            "recycle_count": action_counts.get("recycle", 0),
+        },
     )

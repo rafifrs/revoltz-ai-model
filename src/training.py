@@ -10,7 +10,7 @@ from src.config import ARTIFACTS_DIR, DATA_DIR, DEFAULT_MODEL_PATH, DEFAULT_SNAP
 from src.data_loader import load_all_cells
 from src.feature_extractor import extract_snapshot_features
 from src.labeler import generate_compatibility_pairs
-from src.model import CellMatcher
+from src.model.model2_cell_matcher import CellMatcher
 
 
 def build_training_dataframe(cells: list[dict], snapshot_cycle: int) -> pd.DataFrame:

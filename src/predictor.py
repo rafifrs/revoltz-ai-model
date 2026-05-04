@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from src.config import DEFAULT_MODEL_PATH
-from src.model import CellMatcher
+from src.config import DEFAULT_MODEL1_PATH, DEFAULT_MODEL_PATH
+from src.model.model1_soh import SoHPredictor
+from src.model.model2_cell_matcher import CellMatcher
 from src.pack_recommender import recommend_packs
 
 
 _model: CellMatcher | None = None
+_model1: SoHPredictor | None = None
 
 
 def get_model(model_path: str | Path = DEFAULT_MODEL_PATH) -> CellMatcher:
@@ -24,6 +26,20 @@ def get_model(model_path: str | Path = DEFAULT_MODEL_PATH) -> CellMatcher:
 
 def predict_cells(cells: list[dict]) -> list[dict]:
     return get_model().predict(cells)
+
+
+def get_model1(model_path: str | Path = DEFAULT_MODEL1_PATH) -> SoHPredictor:
+    global _model1
+    if _model1 is None:
+        path = Path(model_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Model 1 artifact not found at {path}. Run `python train_model1.py` first.")
+        _model1 = SoHPredictor.load(path)
+    return _model1
+
+
+def predict_pack_health(packs: list[dict]) -> list[dict]:
+    return get_model1().predict(packs)
 
 
 def predict_cells_with_recommendations(

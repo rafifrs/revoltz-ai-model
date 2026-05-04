@@ -3,13 +3,19 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data" / "hnei"
+MODEL1_DATA_DIR = PROJECT_ROOT / "data" / "nasa_soh_dataset"
 MODELS_DIR = PROJECT_ROOT / "models"
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
 DEFAULT_MODEL_PATH = MODELS_DIR / "cell_matcher_v1.pkl"
+DEFAULT_MODEL1_PATH = MODELS_DIR / "soh_predictor_v1.pkl"
 DEFAULT_SNAPSHOT_CYCLE = 100
 
 COMPATIBILITY_IR_THRESHOLD = 0.005
 COMPATIBILITY_OCV_THRESHOLD = 0.05
 IQR_MULTIPLIER = 1.5
 MODEL_VERSION = "cell_matcher_v1"
+
+MODEL1_VERSION = "soh_predictor_v1"
+MODEL1_RECONDITION_MIN_SOH = 0.8
+MODEL1_REPACK_MIN_SOH = 0.6
 

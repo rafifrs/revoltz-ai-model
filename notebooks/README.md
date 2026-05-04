@@ -1,19 +1,26 @@
 # Notebooks
+Notebook ini mencakup alur end-to-end:
+- eksplorasi dataset HNEI (ringkasan cell + cycle)
+- EDA SoH/capacity fade
+- analisis feature engineering (`IR_ohm`, `OCV_V`, `SoH`)
+- training dan evaluasi `CellMatcher` (outlier, cluster, silhouette metadata)
+- inferensi dan rekomendasi pack
 
-No `.ipynb` files were required for the first implementation because the MVP was built as a runnable training and serving pipeline first.
+Notebook Model 1 (`soh_predictor.ipynb`) mencakup:
+- ingestion NASA ARC zip dataset
+- EDA battery-level dan cycle-level
+- training/evaluasi SoH predictor
+- inferensi pack-level + action triage
 
-That was intentional:
-- `train.py` is better for repeatable training
-- FastAPI integration needs script-first code anyway
-- notebooks are better for exploration, not for the final serving path
+## Cara pakai
 
-If you want, the next step can be to add:
-- `01_eda.ipynb`
-- `02_feature_engineering.ipynb`
-- `03_modeling.ipynb`
+1. Pastikan dependency sudah ter-install:
+   - `pip install -r requirements.txt`
+2. Jalankan Jupyter:
+   - `jupyter notebook`
+3. Buka:
+   - `notebooks/cell_matcher.ipynb`
+4. Run semua sel dari atas ke bawah.
 
-Those notebooks would be useful for:
-- visualizing capacity fade and SoH trends
-- inspecting IR extraction behavior from raw cycles
-- comparing clustering quality across different `k` values
+
 
