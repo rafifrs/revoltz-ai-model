@@ -117,7 +117,7 @@ class SoHPredictor:
         preds = self.pipeline.predict(x)
         q = self.residual_quantile or 0.1
         results: list[dict] = []
-        for raw, soh in zip(x.to_dict(orient="records"), preds):
+        for raw, soh in zip(packs, preds):
             predicted = float(np.clip(soh, 0.0, 1.2))
             confidence = float(np.clip(1.0 - min(abs(predicted - 0.8), q) / max(q, 1e-6), 0.0, 1.0))
             results.append(
